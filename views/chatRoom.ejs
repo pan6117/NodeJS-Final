@@ -1,0 +1,67 @@
+<%- include("partials/header"); -%>
+
+<h1 class="chatRoomPage"><%= chatRoom.name %></h1>
+<p class="chatRoomPage">Description: <%= chatRoom.description %></p>
+
+<!-- Chat messages -->
+<div id="chatMessages">
+  <% if (chatRoom.messages && chatRoom.messages.length > 0) { %> <%
+  chatRoom.messages.forEach((message) => { %>
+  <div><%= message.text %></div>
+  <% }); %> <% } else { %>
+  <div>No messages yet.</div>
+  <% } %>
+</div>
+
+<!-- Chat input form -->
+<form id="chatForm" onsubmit="sendMessage(event)">
+  <input
+    type="text"
+    id="messageInput"
+    placeholder="Type your message..."
+    required
+  />
+  <button type="submit">Send</button>
+</form>
+
+<script>
+  const socket = io();
+  const chatMessages = document.getElementById("chatMessages");
+  const chatForm = document.getElementById("chatForm");
+  const messageInput = document.getElementById("messageInput");
+
+  // Event listener for form submission
+  function sendMessage(event) {
+    event.preventDefault();
+    const message = messageInput.value.trim();
+
+    if (message) {
+      console.log("Sending message:", message); // 調試語句
+
+      // Emit the chat message event to the server
+      socket.emit("chatMessage", {
+        chatRoomId: "<%= chatRoom._id %>",
+        text: message,
+      });
+
+      // Clear the input field
+      messageInput.value = "";
+    }
+  }
+
+  // Event listener for receiving chat messages
+  socket.on("message", (data) => {
+    console.log("Received message:", data); // 調試語句
+
+    const { message } = data;
+
+    // Create a new message element
+    const messageElement = document.createElement("div");
+    messageElement.textContent = message.text;
+
+    // Append the message to the chat messages container
+    chatMessages.appendChild(messageElement);
+  });
+</script>
+
+<%- include("partials/footer"); -%>

@@ -1,0 +1,18 @@
+<%- include("partials/header"); -%>
+
+<h1 class="homePage">Chat Rooms</h1>
+<p class="homePage">test</p>
+
+<% if (chatRooms.length === 0) { %>
+<p>No chat rooms available.</p>
+<% } else { %>
+<ul>
+  <% chatRooms.forEach((chatRoom) => { %>
+  <li>
+    <h2><%= chatRoom.name %></h2>
+    <p><%= chatRoom.description %></p>
+    <a href="/chatrooms/<%= chatRoom._id %>">View Chat Room</a>
+  </li>
+  <% }); %>
+</ul>
+<% } %> <%- include("partials/footer"); -%>

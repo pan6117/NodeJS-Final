@@ -1,0 +1,28 @@
+<%- include("partials/header"); -%>
+
+<h1 class="homePage">Chat Rooms</h1>
+<p class="homePage">test</p>
+<% if (chatRooms.length === 0) { %>
+<p>No chat rooms available.</p>
+<% } else { %>
+<ul>
+  <% chatRooms.forEach((chatRoom) => { %>
+  <li>
+    <h2><%= chatRoom.name %></h2>
+    <p><%= chatRoom.description %></p>
+    <a href="#" onclick="joinChatRoom('<%= chatRoom._id %>')">Join Chat Room</a>
+  </li>
+  <% }); %>
+</ul>
+<% } %> <%- include("partials/footer"); -%>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  // 加入聊天室
+  function joinChatRoom(chatRoomId) {
+    socket.emit("joinChatRoom", chatRoomId);
+    window.location.href = `/chatrooms/${chatRoomId}`;
+  }
+</script>
