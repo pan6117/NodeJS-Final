@@ -12,7 +12,19 @@
     <h2><%= chatRoom.name %></h2>
     <p><%= chatRoom.description %></p>
     <a href="/chatrooms/<%= chatRoom._id %>">View Chat Room</a>
+    <a href="/chatrooms/<%= chatRoom._id %>/edit">Edit Chat Room</a>
+    <form
+      action="/chatrooms/<%= chatRoom._id %>?_method=DELETE"
+      method="POST"
+      onsubmit="return confirm('Are you sure you want to delete this chat room?');"
+    >
+      <button type="submit">Delete Chat Room</button>
+    </form>
   </li>
   <% }); %>
 </ul>
-<% } %> <%- include("partials/footer"); -%>
+<% } %>
+
+<a href="/chatrooms/new">Create Chat Room</a>
+
+<%- include("partials/footer"); -%>

@@ -12,17 +12,22 @@ const LocalStrategy = require("passport-local").Strategy;
 const User = require("./models/user");
 require("./models/passport");
 const ChatRoom = require("./models/chatRoom");
+const chatRoomsRouter = require("./routes/chatrooms");
+const methodOverride = require("method-override");
+const socketio = require("socket.io");
 
 const homeStartingContent = "This is a chatroom.";
 
 const app = express();
 const server = require("http").Server(app);
-const io = require("socket.io")(server);
+const io = socketio(server);
 
 app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+
+app.use(methodOverride("_method"));
 
 app.use(
   session({
@@ -34,6 +39,8 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use("/chatrooms", chatRoomsRouter);
 
 const url =
   "mongodb+srv://admin-pan:Test123@cluster0.pyd16yp.mongodb.net/finalDB";
@@ -198,6 +205,7 @@ app.delete("/chatrooms/:id", async (req, res) => {
       return res.status(404).json({ error: "Chat room not found" });
     }
     res.json({ message: "Chat room deleted successfully" });
+    //res.redirect("/chatrooms");
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Failed to delete chat room" });

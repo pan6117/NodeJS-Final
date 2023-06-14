@@ -24,6 +24,11 @@
   <button type="submit">Send</button>
 </form>
 
+<a href="/chatrooms">Back to Chat Rooms</a>
+
+<%- include("partials/footer"); -%>
+
+<script src="/socket.io/socket.io.js"></script>
 <script>
   const socket = io();
   const chatMessages = document.getElementById("chatMessages");
@@ -36,8 +41,6 @@
     const message = messageInput.value.trim();
 
     if (message) {
-      console.log("Sending message:", message); // 調試語句
-
       // Emit the chat message event to the server
       socket.emit("chatMessage", {
         chatRoomId: "<%= chatRoom._id %>",
@@ -51,8 +54,6 @@
 
   // Event listener for receiving chat messages
   socket.on("message", (data) => {
-    console.log("Received message:", data); // 調試語句
-
     const { message } = data;
 
     // Create a new message element
@@ -63,5 +64,3 @@
     chatMessages.appendChild(messageElement);
   });
 </script>
-
-<%- include("partials/footer"); -%>

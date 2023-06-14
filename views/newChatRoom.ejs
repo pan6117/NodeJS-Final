@@ -1,0 +1,12 @@
+<%- include("partials/header"); -%>
+<h1>Create Chat Room</h1>
+<form action="/chatrooms" method="post">
+  <label for="name">Room Name:</label>
+  <input type="text" id="name" name="name" />
+  <br />
+  <label for="description">Room Description:</label>
+  <textarea id="description" name="description"></textarea>
+  <br />
+  <input type="submit" value="Create" />
+</form>
+<%- include("partials/footer"); -%>
