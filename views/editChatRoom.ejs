@@ -1,0 +1,19 @@
+<!-- editChatRoom.ejs -->
+
+<%- include("partials/header"); -%>
+<div class="homePage">
+  <h1>Edit Chat Room</h1>
+
+  <form action="/chatrooms/<%= chatRoom._id %>?_method=PUT" method="POST">
+    <div>
+      <label for="name">Chat Room Name</label>
+      <input type="text" name="name" value="<%= chatRoom.name %>" />
+    </div>
+    <div>
+      <label for="description">Chat Room Description</label>
+      <textarea name="description"><%= chatRoom.description %></textarea>
+    </div>
+    <button type="submit">Update Chat Room</button>
+  </form>
+</div>
+<%- include("partials/footer"); -%>

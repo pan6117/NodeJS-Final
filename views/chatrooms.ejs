@@ -1,30 +1,30 @@
 <%- include("partials/header"); -%>
+<div class="homePage">
+  <h1 class="homePage">Chat Rooms</h1>
+  <p class="homePage">test</p>
 
-<h1 class="homePage">Chat Rooms</h1>
-<p class="homePage">test</p>
+  <% if (chatRooms.length === 0) { %>
+  <p>No chat rooms available.</p>
+  <% } else { %>
+  <ul>
+    <% chatRooms.forEach((chatRoom) => { %>
+    <li>
+      <h2><%= chatRoom.name %></h2>
+      <p><%= chatRoom.description %></p>
+      <a href="/chatrooms/<%= chatRoom._id %>">View Chat Room</a>
+      <a href="/chatrooms/<%= chatRoom._id %>/edit">Edit Chat Room</a>
+      <form
+        action="/chatrooms/<%= chatRoom._id %>?_method=DELETE"
+        method="POST"
+        onsubmit="return confirm('Are you sure you want to delete this chat room?');"
+      >
+        <button type="submit">Delete Chat Room</button>
+      </form>
+    </li>
+    <% }); %>
+  </ul>
+  <% } %>
 
-<% if (chatRooms.length === 0) { %>
-<p>No chat rooms available.</p>
-<% } else { %>
-<ul>
-  <% chatRooms.forEach((chatRoom) => { %>
-  <li>
-    <h2><%= chatRoom.name %></h2>
-    <p><%= chatRoom.description %></p>
-    <a href="/chatrooms/<%= chatRoom._id %>">View Chat Room</a>
-    <a href="/chatrooms/<%= chatRoom._id %>/edit">Edit Chat Room</a>
-    <form
-      action="/chatrooms/<%= chatRoom._id %>?_method=DELETE"
-      method="POST"
-      onsubmit="return confirm('Are you sure you want to delete this chat room?');"
-    >
-      <button type="submit">Delete Chat Room</button>
-    </form>
-  </li>
-  <% }); %>
-</ul>
-<% } %>
-
-<a href="/chatrooms/new">Create Chat Room</a>
-
+  <a href="/chatrooms/new">Create Chat Room</a>
+</div>
 <%- include("partials/footer"); -%>

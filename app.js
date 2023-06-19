@@ -15,6 +15,9 @@ const ChatRoom = require("./models/chatRoom");
 const chatRoomsRouter = require("./routes/chatrooms");
 const methodOverride = require("method-override");
 const socketio = require("socket.io");
+const dotenv = require("dotenv");
+
+dotenv.config(); // 加載.env檔案中的配置
 
 const homeStartingContent = "This is a chatroom.";
 
@@ -31,7 +34,7 @@ app.use(methodOverride("_method"));
 
 app.use(
   session({
-    secret: "your-secret-key",
+    secret: process.env.SESSION_SECRET, // 使用環境變數中的 SESSION_SECRET
     resave: false,
     saveUninitialized: false,
   })
@@ -42,8 +45,7 @@ app.use(passport.session());
 
 app.use("/chatrooms", chatRoomsRouter);
 
-const url =
-  "mongodb+srv://admin-pan:Test123@cluster0.pyd16yp.mongodb.net/finalDB";
+const url = process.env.DB_URL; // 使用環境變數中的 DB_URL
 
 mongoose
   .connect(url, { useNewUrlParser: true })

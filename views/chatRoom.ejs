@@ -1,9 +1,6 @@
+<!-- chatRoom.ejs -->
 <%- include("partials/header"); -%>
-
-<h1 class="chatRoomPage"><%= chatRoom.name %></h1>
-<p class="chatRoomPage">Description: <%= chatRoom.description %></p>
-
-<!-- Chat messages -->
+<!-- 聊天訊息 -->
 <div id="chatMessages">
   <% if (chatRoom.messages && chatRoom.messages.length > 0) { %> <%
   chatRoom.messages.forEach((message) => { %>
@@ -13,8 +10,8 @@
   <% } %>
 </div>
 
-<!-- Chat input form -->
-<form id="chatForm" onsubmit="sendMessage(event)">
+<!-- 聊天輸入表單 -->
+<form id="chatForm">
   <input
     type="text"
     id="messageInput"
@@ -24,43 +21,33 @@
   <button type="submit">Send</button>
 </form>
 
-<a href="/chatrooms">Back to Chat Rooms</a>
-
-<%- include("partials/footer"); -%>
-
+<!-- 引入 Socket.IO 客戶端程式庫 -->
 <script src="/socket.io/socket.io.js"></script>
+
+<!-- 前端 JavaScript 代碼 -->
 <script>
   const socket = io();
   const chatMessages = document.getElementById("chatMessages");
   const chatForm = document.getElementById("chatForm");
   const messageInput = document.getElementById("messageInput");
 
-  // Event listener for form submission
-  function sendMessage(event) {
-    event.preventDefault();
-    const message = messageInput.value.trim();
-
-    if (message) {
-      // Emit the chat message event to the server
-      socket.emit("chatMessage", {
-        chatRoomId: "<%= chatRoom._id %>",
-        text: message,
-      });
-
-      // Clear the input field
-      messageInput.value = "";
-    }
-  }
-
-  // Event listener for receiving chat messages
+  // 監聽 'message' 事件，並在收到訊息時更新網頁上的內容
   socket.on("message", (data) => {
-    const { message } = data;
-
-    // Create a new message element
+    const message = data.text;
     const messageElement = document.createElement("div");
-    messageElement.textContent = message.text;
-
-    // Append the message to the chat messages container
+    messageElement.innerText = message;
     chatMessages.appendChild(messageElement);
   });
+
+  // 監聽表單的提交事件，發送聊天訊息到伺服器
+  chatForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const message = messageInput.value.trim();
+    if (message !== "") {
+      const chatRoomId = "<%= chatRoom._id %>"; // 聊天室的ID
+      socket.emit("chatMessage", { chatRoomId, message });
+      messageInput.value = "";
+    }
+  });
 </script>
+<%- include("partials/footer"); -%>
