@@ -1,25 +1,27 @@
 <!-- chatRoom.ejs -->
 <%- include("partials/header"); -%>
-<!-- 聊天訊息 -->
-<div id="chatMessages">
-  <% if (chatRoom.messages && chatRoom.messages.length > 0) { %> <%
-  chatRoom.messages.forEach((message) => { %>
-  <div><%= message.text %></div>
-  <% }); %> <% } else { %>
-  <div>No messages yet.</div>
-  <% } %>
-</div>
+<div class="homePage">
+  <!-- 聊天訊息 -->
+  <div id="chatMessages">
+    <% if (chatRoom.messages && chatRoom.messages.length > 0) { %> <%
+    chatRoom.messages.forEach((message) => { %>
+    <div><%= message.text %></div>
+    <% }); %> <% } else { %>
+    <div>No messages yet.</div>
+    <% } %>
+  </div>
 
-<!-- 聊天輸入表單 -->
-<form id="chatForm">
-  <input
-    type="text"
-    id="messageInput"
-    placeholder="Type your message..."
-    required
-  />
-  <button type="submit">Send</button>
-</form>
+  <!-- 聊天輸入表單 -->
+  <form id="chatForm">
+    <input
+      type="text"
+      id="messageInput"
+      placeholder="Type your message..."
+      required
+    />
+    <button type="submit">Send</button>
+  </form>
+</div>
 
 <!-- 引入 Socket.IO 客戶端程式庫 -->
 <script src="/socket.io/socket.io.js"></script>
